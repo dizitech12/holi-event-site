@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Complete your Holi ticket booking payment for Gajendragad — Savji community." />
+    <title>Pay — Holi Booking Gajendragad</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <!--
+    QRCode.js — lightweight client-side QR code generator (MIT licence)
+    CDN: https://cdnjs.com/libraries/qrcodejs
+    No server required; generates the QR entirely in the browser.
+  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Animated gradient background -->
+    <div class="bg-canvas" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+    </div>
+
+    <!-- Confetti canvas — activated after successful booking -->
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+    <div class="page-wrapper">
+
+        <!-- ── HERO MINI HEADER ────────────────────────── -->
+        <header class="hero" style="padding-top:20px;padding-bottom:12px;" role="banner">
+            <span class="hero-emoji" style="font-size:2.2rem;" aria-hidden="true">💳</span>
+            <h1 style="font-size:clamp(1.6rem,6vw,2.4rem);">Complete Payment</h1>
+            <p class="hero-sub">Scan the QR or use the UPI ID to pay, then upload your screenshot.</p>
+        </header>
+
+        <!-- ── STEP INDICATOR ─────────────────────────── -->
+        <nav class="steps" aria-label="Booking steps">
+            <div class="step done">
+                <div class="step-circle">✓</div>
+                <div class="step-label">Details</div>
+            </div>
+            <div class="step active" aria-current="step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Pay</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">3</div>
+                <div class="step-label">Confirm</div>
+            </div>
+        </nav>
+
+        <!-- ── MAIN PAYMENT CARD ──────────────────────── -->
+        <main>
+            <div class="card" id="pay-card" role="main">
+                <h2 class="card-title">
+                    <span aria-hidden="true">🎟️</span> Booking Summary
+                </h2>
+
+                <!-- Booking summary strip -->
+                <div class="booking-summary" id="booking-summary" aria-label="Your booking details">
+                    <div><strong>Name:</strong> <span id="summary-name">—</span></div>
+                    <div><strong>Phone:</strong> <span id="summary-phone">—</span></div>
+                    <div><strong>City:</strong> <span id="summary-city">—</span></div>
+                    <div><strong>Tickets:</strong> <span id="summary-tickets">—</span></div>
+                    <div><strong>Attendees:</strong> <span id="summary-attendees">—</span></div>
+                </div>
+
+                <!-- Amount display -->
+                <div class="amount-display" aria-label="Total payment amount">
+                    <div class="amount-label">Total Amount to Pay</div>
+                    <div class="amount-value" id="total-amount">₹—</div>
+                    <div class="per-ticket" id="per-ticket-info"></div>
+                </div>
+
+                <div class="divider" aria-hidden="true"></div>
+
+                <!-- ── QR CODE SECTION ─────────────────────── -->
+                <section class="qr-section" aria-label="UPI Payment QR code">
+                    <h3 class="card-title" style="justify-content:center;">
+                        <span aria-hidden="true">📲</span> Pay via UPI
+                    </h3>
+
+
+
+                    <!-- QR render target -->
+                    <div class="qr-box" role="img" aria-label="UPI QR code for payment">
+                        <div id="qr-container"></div>
+                    </div>
+
+                </section>
+
+                <div class="divider" aria-hidden="true"></div>
+
+                <!-- ── SCREENSHOT UPLOAD ───────────────────── -->
+                <section aria-label="Upload payment screenshot">
+                    <h3 class="card-title">
+                        <span aria-hidden="true">📸</span> Upload Payment Screenshot
+                    </h3>
+
+                    <p class="alert alert-info visible" aria-live="polite">
+                        ⚠ Please upload the <strong>correct &amp; eligible screenshot</strong> of the UPI payment
+                        (UPI success/receipt screen). <strong>Only PNG / JPG, max 3 MB.</strong>
+                    </p>
+
+                    <div class="upload-area" id="upload-area" role="region"
+                        aria-label="Drag and drop area for payment screenshot">
+                        <!-- Actual file input (invisible, overlaid on the area) -->
+                        <input type="file" id="screenshot-input" name="screenshot" accept="image/png, image/jpeg"
+                            aria-label="Upload UPI payment screenshot (PNG or JPG, max 3MB)" />
+                        <div class="upload-icon" aria-hidden="true">📂</div>
+                        <p>
+                            Tap or drag your UPI payment screenshot here.
+                            <strong>PNG / JPG only · Max 3 MB</strong>
+                        </p>
+                    </div>
+
+                    <!-- Preview and file name -->
+                    <div class="preview-box" id="preview-box" aria-live="polite">
+                        <img id="preview-img" src="" alt="Payment screenshot preview" />
+                        <div class="file-name" id="preview-filename"></div>
+                    </div>
+                </section>
+
+                <!-- General alert banner for upload/save errors -->
+                <div class="alert" id="pay-alert" role="alert" aria-live="assertive"></div>
+
+                <!-- Submit booking button (disabled until file chosen) -->
+                <button class="btn btn-success" id="btn-submit" disabled
+                    aria-label="Submit booking after uploading screenshot">
+                    ✅ Submit Booking
+                </button>
+
+                <!-- Back link -->
+                <div style="text-align:center;margin-top:16px;">
+                    <a href="index.html" id="btn-back" class="btn btn-secondary" aria-label="Go back to booking form">
+                        ← Back to Form
+                    </a>
+                </div>
+
+            </div><!-- /pay-card -->
+
+            <!-- ── SUCCESS SCREEN (hidden until booking confirmed) ────── -->
+            <div class="card success-screen" id="success-screen" role="region" aria-live="polite"
+                aria-label="Booking confirmed">
+                <span class="success-icon" aria-hidden="true">🎊</span>
+                <h2>Booking Submitted!</h2>
+                <p>Rang Barse! Your Holi booking for Gajendragad is confirmed.</p>
+                <p>The organiser will reach out if any details need to be verified.</p>
+
+                <div class="success-detail" aria-label="Booking confirmation details">
+                    <div><strong>Name</strong> <span id="s-name">—</span></div>
+                    <div><strong>Amount Paid</strong> <span id="s-amount">—</span></div>
+                    <div><strong>Tickets</strong> <span id="s-tickets">—</span></div>
+                    <div><strong>City</strong> <span id="s-city">—</span></div>
+                    <div><strong>Date &amp; Time</strong> <span id="s-time">—</span></div>
+                    <div><strong>Booking Ref</strong> <span id="s-ref">—</span></div>
+                </div>
+
+                <p style="font-size:0.8rem;color:rgba(255,255,255,0.45);margin-top:12px;">
+                    Take a screenshot of this page for your records. See you at the celebration! 🌈
+                </p>
+
+                <!-- Start fresh booking -->
+                <a href="index.html" class="btn btn-primary" style="margin-top:18px;">
+                    Book Another Ticket
+                </a>
+            </div><!-- /success-screen -->
+
+        </main><!-- /main -->
+
+        <footer class="footer-note">
+            <p>Rang Barse! 🌈 &nbsp;|&nbsp; Gajendragad Holi 2025 &nbsp;|&nbsp; Savji Community</p>
+        </footer>
+
+    </div><!-- /page-wrapper -->
+
+    <!--
+    app.js is loaded AFTER QRCode.js (both defer, executed in DOM order).
+    app.js → initPaymentPage() reads sessionStorage and calls generateQR().
+  -->
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Book your Holi 2025 tickets for the Gajendragad celebration — exclusively for the Savji community." />
+  <title>Holi Booking — Gajendragad (Savji)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- Animated gradient background blobs -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+  </div>
+
+  <!-- Confetti canvas (activated on success page) -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <div class="page-wrapper">
+
+    <!-- ── HERO HEADER ─────────────────────────────── -->
+    <header class="hero" role="banner">
+      <span class="hero-emoji" aria-hidden="true">🎨</span>
+      <h1>Happy Holi!&nbsp;🌈</h1>
+      <p class="hero-sub">
+        <strong>Holi Booking — Gajendragad</strong><br />
+        Exclusive celebration for the <em>Savji community</em> only.
+        Book your spot and celebrate with colours!
+      </p>
+      <span class="hero-badge">Savji Community Only 🎉</span>
+      <!-- Decorative colour strip -->
+      <div class="dust-strip" aria-hidden="true">
+        <span style="background:#FF3C78"></span>
+        <span style="background:#FFD600"></span>
+        <span style="background:#00E5FF"></span>
+        <span style="background:#D500F9"></span>
+        <span style="background:#FF6D00"></span>
+      </div>
+    </header>
+
+    <!-- ── STEP INDICATOR ─────────────────────────── -->
+    <nav class="steps" aria-label="Booking steps">
+      <div class="step active" aria-current="step">
+        <div class="step-circle">1</div>
+        <div class="step-label">Details</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-label">Pay</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-label">Confirm</div>
+      </div>
+    </nav>
+
+    <!-- ── BOOKING FORM CARD ──────────────────────── -->
+    <main>
+      <div class="card" role="main">
+        <h2 class="card-title">
+          <span aria-hidden="true">📝</span> Booking Details
+        </h2>
+
+        <form id="booking-form" novalidate aria-label="Holi ticket booking form">
+
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Full Name <span aria-hidden="true">✨</span></label>
+            <input type="text" id="name" name="name" placeholder="e.g. Ramesh Savji" required autocomplete="name"
+              aria-required="true" aria-describedby="name-error" />
+            <span class="field-error" id="name-error" role="alert"></span>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label for="phone">Mobile Number <span aria-hidden="true">📱</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="10-digit mobile number" maxlength="10"
+              inputmode="numeric" pattern="[0-9]{10}" required autocomplete="tel" aria-required="true"
+              aria-describedby="phone-error" />
+            <span class="field-error" id="phone-error" role="alert"></span>
+          </div>
+
+          <!-- City -->
+          <div class="form-group">
+            <label for="city">City / Town <span aria-hidden="true">🏡</span></label>
+            <input type="text" id="city" name="city" list="city-list" placeholder="e.g. Gajendragad, Hubli, Dharwad…"
+              required autocomplete="address-level2" aria-required="true" aria-describedby="city-error" />
+            <!-- Datalist gives quick suggestions while still allowing free text -->
+            <datalist id="city-list">
+              <option value="Gajendragad">
+              <option value="Hubli">
+              <option value="Dharwad">
+              <option value="Gadag">
+              <option value="Bangalore">
+              <option value="Mumbai">
+              <option value="Pune">
+              <option value="Belgaum">
+            </datalist>
+            <span class="field-error" id="city-error" role="alert"></span>
+          </div>
+
+          <!-- Ticket Count (stepper) -->
+          <div class="form-group">
+            <label id="ticket-count-label">Number of Tickets <span aria-hidden="true">🎟️</span></label>
+            <div class="stepper-row" role="group" aria-labelledby="ticket-count-label">
+              <button type="button" class="stepper-btn" id="btn-minus" aria-label="Decrease ticket count">−</button>
+              <span class="stepper-count" id="ticket-count-display" aria-live="polite" aria-atomic="true">1</span>
+              <button type="button" class="stepper-btn" id="btn-plus" aria-label="Increase ticket count">+</button>
+            </div>
+          </div>
+
+          <!-- Attendees (shown dynamically when ticket_count > 1) -->
+          <div class="attendees-section" id="attendees-section" aria-live="polite">
+            <h3>
+              <span aria-hidden="true">👥</span>
+              Attendee Names
+            </h3>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-bottom:10px;">
+              Enter the full name of each guest attending.
+            </p>
+            <!-- Inputs are built dynamically by app.js -->
+            <div id="attendees-container"></div>
+            <span class="field-error" id="attendees-error" role="alert"></span>
+          </div>
+
+          <!-- Ticket price note -->
+          <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin:12px 0 4px;text-align:center;">
+            Each ticket: <strong style="color:#FFD600;">₹300</strong> per person
+          </p>
+
+          <!-- Book Button -->
+          <button type="submit" class="btn btn-primary" id="btn-book" aria-label="Proceed to payment">
+            🎉 Book Now — Pay Securely
+          </button>
+
+        </form>
+      </div><!-- /card -->
+    </main>
+
+    <footer class="footer-note">
+      <p>Rang Barse! 🌈 &nbsp;|&nbsp; Gajendragad Holi 2025 &nbsp;|&nbsp; Savji Community</p>
+    </footer>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- app.js handles all form logic, validation, and navigation to pay.html -->
+  <script src="app.js"></script>
+</body>
+
+</html>

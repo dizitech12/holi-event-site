@@ -1,0 +1,866 @@
+/* =========================================================
+   styles.css — Holi Booking UI (Gajendragad · Savji Only)
+   Theme: Vibrant Holi palette — pink, yellow, cyan, magenta, orange
+   Mobile-first, accessible, festive
+   ========================================================= */
+
+/* ---------- Google Font ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Baloo+2:wght@700;800&display=swap');
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+    --pink: #FF3C78;
+    --magenta: #D500F9;
+    --yellow: #FFD600;
+    --cyan: #00E5FF;
+    --orange: #FF6D00;
+    --deepblue: #1A0533;
+    --white: #FFFFFF;
+    --offwhite: #FFF8F0;
+    --grey: #5A4970;
+    --light-grey: #EEE7F5;
+
+    --shadow-card: 0 8px 40px rgba(213, 0, 249, 0.18);
+    --radius: 18px;
+    --radius-sm: 10px;
+    --transition: 0.25s ease;
+
+    --font-body: 'Poppins', sans-serif;
+    --font-hero: 'Baloo 2', cursive;
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--deepblue);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ---------- Animated Gradient Background ---------- */
+.bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(135deg, #1A0533 0%, #2D0054 30%, #170030 60%, #0D001A 100%);
+    overflow: hidden;
+}
+
+/* Floating color blobs */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    animation: blobFloat 8s ease-in-out infinite alternate;
+}
+
+.blob-1 {
+    width: 420px;
+    height: 420px;
+    background: var(--pink);
+    top: -120px;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+.blob-2 {
+    width: 360px;
+    height: 360px;
+    background: var(--cyan);
+    bottom: -80px;
+    right: -80px;
+    animation-delay: 2s;
+}
+
+.blob-3 {
+    width: 280px;
+    height: 280px;
+    background: var(--yellow);
+    top: 40%;
+    left: 50%;
+    animation-delay: 4s;
+}
+
+.blob-4 {
+    width: 240px;
+    height: 240px;
+    background: var(--magenta);
+    bottom: 30%;
+    left: -60px;
+    animation-delay: 1s;
+}
+
+.blob-5 {
+    width: 200px;
+    height: 200px;
+    background: var(--orange);
+    top: 70%;
+    right: 20%;
+    animation-delay: 3s;
+}
+
+@keyframes blobFloat {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(-40px) scale(1.08);
+    }
+}
+
+/* ---------- Page Wrapper ---------- */
+.page-wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 60px;
+}
+
+/* ---------- Hero Header ---------- */
+.hero {
+    text-align: center;
+    padding: 32px 16px 24px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.hero-emoji {
+    font-size: 3rem;
+    display: block;
+    animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.hero h1 {
+    font-family: var(--font-hero);
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--yellow), var(--pink), var(--cyan), var(--orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    margin: 8px 0 6px;
+    text-shadow: none;
+}
+
+.hero-sub {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.5;
+}
+
+.hero-badge {
+    display: inline-block;
+    margin-top: 12px;
+    background: linear-gradient(135deg, var(--pink), var(--orange));
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    padding: 5px 16px;
+    border-radius: 99px;
+    text-transform: uppercase;
+}
+
+/* Colour-dust strip */
+.dust-strip {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 16px 0 0;
+}
+
+.dust-strip span {
+    width: 36px;
+    height: 6px;
+    border-radius: 3px;
+}
+
+/* ---------- Card ---------- */
+.card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1.5px solid rgba(255, 255, 255, 0.13);
+    border-radius: var(--radius);
+    padding: 28px 22px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: var(--shadow-card);
+    margin-top: 12px;
+}
+
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--yellow);
+}
+
+/* ---------- Form Controls ---------- */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.88);
+    letter-spacing: 0.02em;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    color: var(--white);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+input:focus,
+select:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.18);
+}
+
+/* Stepper row for ticket count */
+.stepper-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stepper-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--pink);
+    background: transparent;
+    color: var(--pink);
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition), color var(--transition);
+    flex-shrink: 0;
+}
+
+.stepper-btn:hover,
+.stepper-btn:focus {
+    background: var(--pink);
+    color: var(--white);
+    outline: none;
+}
+
+.stepper-count {
+    font-size: 1.4rem;
+    font-weight: 700;
+    min-width: 32px;
+    text-align: center;
+    color: var(--yellow);
+}
+
+/* Inline validation error */
+.field-error {
+    font-size: 0.78rem;
+    color: #FF6B6B;
+    margin-top: 5px;
+    display: none;
+    font-weight: 500;
+}
+
+.field-error.visible {
+    display: block;
+}
+
+/* ---------- Attendees Section ---------- */
+.attendees-section {
+    display: none;
+    margin-top: 20px;
+    border: 1.5px dashed rgba(255, 214, 0, 0.45);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    background: rgba(255, 214, 0, 0.05);
+}
+
+.attendees-section.visible {
+    display: block;
+}
+
+.attendees-section h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--yellow);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.attendee-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.attendee-num {
+    width: 26px;
+    height: 26px;
+    background: var(--magenta);
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    border-radius: 99px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+    padding: 14px 28px;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--pink), var(--orange));
+    color: var(--white);
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 16px;
+    box-shadow: 0 6px 24px rgba(255, 60, 120, 0.35);
+    margin-top: 8px;
+}
+
+.btn-primary:hover:not(:disabled) {
+    box-shadow: 0 10px 32px rgba(255, 60, 120, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--white);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    padding: 12px 22px;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #00C853, #1DE9B6);
+    color: var(--white);
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 16px;
+    box-shadow: 0 6px 24px rgba(0, 200, 83, 0.35);
+    margin-top: 12px;
+}
+
+.btn-success:hover:not(:disabled) {
+    box-shadow: 0 10px 32px rgba(0, 200, 83, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-success:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ---------- Payment Page Specific ---------- */
+.amount-display {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 60, 120, 0.15), rgba(255, 109, 0, 0.15));
+    border-radius: var(--radius);
+    border: 1.5px solid rgba(255, 109, 0, 0.3);
+    margin-bottom: 20px;
+}
+
+.amount-display .amount-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.amount-display .amount-value {
+    font-family: var(--font-hero);
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--yellow);
+    line-height: 1.1;
+}
+
+.amount-display .per-ticket {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 4px;
+}
+
+/* QR Section */
+.qr-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.qr-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    margin: 12px auto;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.qr-box canvas,
+.qr-box img {
+    display: block;
+}
+
+.upi-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 12px 0;
+}
+
+.upi-btn {
+    background: rgba(0, 229, 255, 0.1);
+    border: 1.5px solid var(--cyan);
+    border-radius: 99px;
+    color: var(--cyan);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+}
+
+.upi-btn:hover,
+.upi-btn.active {
+    background: var(--cyan);
+    color: var(--deepblue);
+}
+
+.upi-detail-box {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    word-break: break-all;
+}
+
+.copy-link {
+    color: var(--cyan);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.8rem;
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: inherit;
+}
+
+.copy-link:hover {
+    opacity: 0.75;
+}
+
+/* ---------- File Upload ---------- */
+.upload-area {
+    border: 2px dashed rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+    position: relative;
+}
+
+.upload-area:hover,
+.upload-area.drag-over {
+    border-color: var(--yellow);
+    background: rgba(255, 214, 0, 0.05);
+}
+
+.upload-area input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.upload-area .upload-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.upload-area p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+}
+
+.upload-area p strong {
+    color: var(--yellow);
+    display: block;
+    margin-top: 4px;
+}
+
+.preview-box {
+    margin-top: 14px;
+    text-align: center;
+    display: none;
+}
+
+.preview-box.visible {
+    display: block;
+}
+
+.preview-box img {
+    max-width: 180px;
+    max-height: 180px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--cyan);
+    object-fit: cover;
+}
+
+.preview-box .file-name {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 6px;
+}
+
+/* ---------- Loading Spinner ---------- */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--white);
+    border-radius: 50%;
+    animation: rotate 0.7s linear infinite;
+    vertical-align: middle;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---------- Status / Alert Banners ---------- */
+.alert {
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-top: 12px;
+    display: none;
+    line-height: 1.5;
+}
+
+.alert.visible {
+    display: block;
+}
+
+.alert-error {
+    background: rgba(255, 60, 60, 0.15);
+    border: 1px solid rgba(255, 60, 60, 0.5);
+    color: #FF8080;
+}
+
+.alert-info {
+    background: rgba(0, 229, 255, 0.10);
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    color: var(--cyan);
+}
+
+.alert-success {
+    background: rgba(0, 200, 83, 0.15);
+    border: 1px solid rgba(0, 200, 83, 0.4);
+    color: #69FF97;
+}
+
+/* ---------- Success Screen (Confetti page) ---------- */
+.success-screen {
+    text-align: center;
+    padding: 32px 20px;
+    display: none;
+    animation: fadeInUp 0.6s ease;
+}
+
+.success-screen.visible {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-screen .success-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.success-screen h2 {
+    font-family: var(--font-hero);
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--yellow), var(--pink), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
+
+.success-screen p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 6px;
+}
+
+.success-detail {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin: 14px 0;
+    text-align: left;
+    font-size: 0.85rem;
+    line-height: 1.8;
+}
+
+.success-detail strong {
+    color: var(--yellow);
+    display: inline-block;
+    width: 100px;
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+}
+
+/* ---------- Divider ---------- */
+.divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 20px 0;
+}
+
+/* ---------- Booking Summary Strip ---------- */
+.booking-summary {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.booking-summary strong {
+    color: var(--yellow);
+}
+
+/* ---------- Step Indicator ---------- */
+.steps {
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 360px;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+
+.step::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    z-index: 0;
+}
+
+.step:last-child::before {
+    display: none;
+}
+
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    position: relative;
+}
+
+.step.active .step-circle {
+    background: var(--pink);
+    border-color: var(--pink);
+    box-shadow: 0 0 12px rgba(255, 60, 120, 0.5);
+}
+
+.step.done .step-circle {
+    background: #00C853;
+    border-color: #00C853;
+}
+
+.step-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 5px;
+    text-align: center;
+}
+
+.step.active .step-label,
+.step.done .step-label {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* ---------- Footer Note ---------- */
+.footer-note {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.72rem;
+    margin-top: 32px;
+}
+
+/* ---------- Responsive tweaks ---------- */
+@media (min-width: 520px) {
+    .card {
+        padding: 36px 32px;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+    .blob,
+    .hero-emoji,
+    .spinner {
+        animation: none;
+    }
+
+    * {
+        transition-duration: 0.01ms !important;
+    }
+}
