@@ -384,9 +384,9 @@ function initFileUpload(bookingData) {
         submitBtn.innerHTML = `<span class="spinner"></span>&nbsp; Verifying screenshot…`;
 
         try {
-            const isValid = await verifyPayment(selectedFile);
+            const ok = await verifyPaymentScreenshot(selectedFile);
 
-            if (!isValid) {
+            if (!ok) {
                 alert("Please upload a valid payment screenshot");
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = "Submit Booking";
@@ -654,20 +654,17 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCopyButtons();  // safe to run on both
 });
 
-async function verifyPayment(file) {
-    const formData = new FormData();
-    formData.append("file", file);
+async function verifyPaymentScreenshot(file) {
+    const { data: { text } } = await Tesseract.recognize(file, 'eng');
+    const t = text.toLowerCase();
 
-    try {
-        const res = await fetch("holi-payment-ocr-production.up.railway.app", {
-            method: "POST",
-            body: formData
-        });
+    let score = 0;
 
-        const data = await res.json();
-        return data.status === "accepted";
-    } catch (e) {
-        alert("Server not reachable");
-        return false;
-    }
+    if (/(upi|gpay|phonepe|paytm|bank|axis|sbi|hdfc|icici)/i.test(t)) score += 2;
+    if (/(paid|success|successful|completed|credited|debited)/i.test(t)) score += 2;
+    if (/(utr|txn|transaction|ref)/i.test(t)) score += 2;
+    if (/(₹|rs)?\s?\d{2,5}(,\d{3})?/i.test(t)) score += 1;
+    if (/\d{9,}/.test(t)) score += 1;
+
+    return score >= 3;
 }
