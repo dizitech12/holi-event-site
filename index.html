@@ -64,6 +64,22 @@
 
     <!-- ── BOOKING FORM CARD ──────────────────────── -->
     <main>
+      <!-- Countdown Timer -->
+      <div class="card countdown-card" id="countdown-card" style="margin-bottom: 16px; text-align: center;">
+        <h3 class="countdown-title">🎉 Holi Starts On March 2 at 8:00 AM</h3>
+        <p class="countdown-subtitle">⏳ Countdown:</p>
+        <div class="countdown-timer" id="countdown-timer">
+          <div class="time-box"><span id="cd-days">00</span><small>Days</small></div>
+          <div class="time-box"><span id="cd-hours">00</span><small>Hours</small></div>
+          <div class="time-box"><span id="cd-minutes">00</span><small>Minutes</small></div>
+          <div class="time-box"><span id="cd-seconds">00</span><small>Seconds</small></div>
+        </div>
+        <div id="countdown-expired" class="countdown-expired"
+          style="display: none; font-size: 1.2rem; color: var(--yellow); font-weight: bold; margin-top: 10px;">
+          🎉 Holi Event Has Started!
+        </div>
+      </div>
+
       <div class="card" role="main">
         <h2 class="card-title">
           <span aria-hidden="true">📝</span> Booking Details
