@@ -549,6 +549,8 @@ function showSuccessScreen(booking, imgUrl, bookingId) {
 
     // Booking reference
     document.getElementById("s-ref").textContent = bookingId;
+
+    setActiveStep(3);
 }
 
 /* ──────────────────────────────────────────────
@@ -648,7 +650,28 @@ function showPayAlert(type, msg, visible = true) {
 /* ──────────────────────────────────────────────
    INIT — Route to correct page controller
    ────────────────────────────────────────────── */
+
+function setActiveStep(stepNumber) {
+    const steps = document.querySelectorAll(".step");
+    steps.forEach((step, index) => {
+        step.classList.remove("active", "completed");
+
+        if (index + 1 < stepNumber) {
+            step.classList.add("completed");
+        }
+        if (index + 1 === stepNumber) {
+            step.classList.add("active");
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("booking-form")) {
+        setActiveStep(1);
+    } else if (document.getElementById("pay-card")) {
+        setActiveStep(2);
+    }
+
     initBookingForm();   // runs only on index.html (guard inside)
     initPaymentPage();   // runs only on pay.html (guard inside)
     setupCopyButtons();  // safe to run on both
