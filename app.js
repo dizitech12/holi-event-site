@@ -57,6 +57,39 @@ const SHEETDB_ID = "7p9uwypnu82ss";
    BOOKING FORM PAGE  (index.html logic)
    ────────────────────────────────────────────── */
 
+function initCountdown() {
+    const timerEl = document.getElementById("countdown-timer");
+    const expiredEl = document.getElementById("countdown-expired");
+    if (!timerEl) return;
+
+    const eventDate = new Date("2026-03-02T08:00:00").getTime();
+
+    function updateTimer() {
+        const now = new Date().getTime();
+        const distance = eventDate - now;
+
+        if (distance < 0) {
+            timerEl.style.display = "none";
+            document.querySelector(".countdown-subtitle").style.display = "none";
+            expiredEl.style.display = "block";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("cd-days").textContent = days.toString().padStart(2, '0');
+        document.getElementById("cd-hours").textContent = hours.toString().padStart(2, '0');
+        document.getElementById("cd-minutes").textContent = minutes.toString().padStart(2, '0');
+        document.getElementById("cd-seconds").textContent = seconds.toString().padStart(2, '0');
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
 /**
  * Initialise the booking form if we're on index.html.
  * Called on DOMContentLoaded.
@@ -65,6 +98,8 @@ function initBookingForm() {
     // Guard: only run on the booking form page
     const form = document.getElementById("booking-form");
     if (!form) return;
+
+    initCountdown();
 
     /* --- Stepper for ticket count --- */
     const countDisplay = document.getElementById("ticket-count-display");
