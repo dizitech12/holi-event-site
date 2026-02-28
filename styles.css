@@ -230,6 +230,56 @@ body {
     color: var(--yellow);
 }
 
+/* ---------- Countdown Timer ---------- */
+.countdown-card {
+    padding: 20px 16px;
+}
+
+.countdown-title {
+    font-size: 1.1rem;
+    color: var(--white);
+    margin-bottom: 8px;
+}
+
+.countdown-subtitle {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 12px;
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.time-box {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    min-width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-box span {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--yellow);
+    font-family: var(--font-hero);
+    line-height: 1;
+}
+
+.time-box small {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+}
+
 /* ---------- Form Controls ---------- */
 .form-group {
     margin-bottom: 18px;
