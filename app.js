@@ -62,7 +62,7 @@ function initCountdown() {
     const expiredEl = document.getElementById("countdown-expired");
     if (!timerEl) return;
 
-    const eventDate = new Date("2026-03-02T08:00:00").getTime();
+    const eventDate = new Date("2026-03-04T08:00:00").getTime();
 
     function updateTimer() {
         const now = new Date().getTime();
