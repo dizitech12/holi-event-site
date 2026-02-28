@@ -814,7 +814,7 @@ select:focus {
     box-shadow: 0 0 12px rgba(255, 60, 120, 0.5);
 }
 
-.step.done .step-circle {
+.step.completed .step-circle {
     background: #00C853;
     border-color: #00C853;
 }
@@ -828,7 +828,7 @@ select:focus {
 }
 
 .step.active .step-label,
-.step.done .step-label {
+.step.completed .step-label {
     color: rgba(255, 255, 255, 0.85);
 }
 
