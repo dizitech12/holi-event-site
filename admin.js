@@ -1,0 +1,96 @@
+"use strict";
+
+const ADMIN_PASSWORD = "holi2026";
+const SHEETDB_ID = "7p9uwypnu82ss"; // Using the same ID as app.js
+const TICKET_PRICE = 300;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loginSection = document.getElementById("login-section");
+    const adminDashboard = document.getElementById("admin-dashboard");
+    const passInput = document.getElementById("admin-pass");
+    const btnLogin = document.getElementById("btn-login");
+    const errorEl = document.getElementById("login-error");
+
+    btnLogin.addEventListener("click", () => {
+        if (passInput.value === ADMIN_PASSWORD) {
+            loginSection.style.display = "none";
+            adminDashboard.style.display = "block";
+            fetchData();
+            setInterval(fetchData, 30000); // Auto-refresh every 30 seconds
+        } else {
+            errorEl.textContent = "Incorrect password. Redirecting...";
+            errorEl.style.display = "block";
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500);
+        }
+    });
+
+    passInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") btnLogin.click();
+    });
+});
+
+async function fetchData() {
+    try {
+        const response = await fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}`);
+        if (!response.ok) throw new Error("Failed to fetch data");
+        const data = await response.json();
+
+        let totalBookings = data.length;
+        let totalRevenue = 0;
+        let totalTickets = 0;
+
+        data.forEach(row => {
+            const amount = parseFloat(row.total_amount) || 0;
+            totalRevenue += amount;
+            const tickets = amount / TICKET_PRICE;
+            totalTickets += tickets;
+        });
+
+        document.getElementById("stat-bookings").textContent = totalBookings;
+        document.getElementById("stat-tickets").textContent = totalTickets;
+        document.getElementById("stat-revenue").textContent = `₹${totalRevenue.toLocaleString("en-IN")}`;
+
+        const latestInfo = [...data].reverse().slice(0, 10);
+
+        const tbody = document.getElementById("bookings-table-body");
+        tbody.innerHTML = "";
+
+        if (latestInfo.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No bookings yet.</td></tr>`;
+            return;
+        }
+
+        latestInfo.forEach(row => {
+            const tr = document.createElement("tr");
+
+            const ticketsCount = (parseFloat(row.total_amount) || 0) / TICKET_PRICE;
+
+            tr.innerHTML = `
+                <td>${escapeHTML(row.name || "-")}</td>
+                <td>${escapeHTML(row.number || "-")}</td>
+                <td>${ticketsCount}</td>
+                <td>₹${(parseFloat(row.total_amount) || 0).toLocaleString("en-IN")}</td>
+                <td style="font-family: monospace; color: var(--cyan);">${escapeHTML(row.booking_id || "-")}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+    } catch (err) {
+        console.error("Error fetching admin data:", err);
+    }
+}
+
+function escapeHTML(str) {
+    if (!str) return "";
+    return str.toString().replace(/[&<>'"]/g,
+        tag => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+        }[tag] || tag)
+    );
+}

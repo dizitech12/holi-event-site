@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Holi Booking</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+        }
+
+        .stat-card .val {
+            font-size: 2rem;
+            color: var(--yellow);
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            color: var(--cyan);
+        }
+
+        .login-container {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .login-container input {
+            max-width: 300px;
+            margin: 0 auto 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-canvas" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    <div class="page-wrapper">
+        <header class="hero" style="padding-top: 20px;">
+            <h1>Admin Panel</h1>
+            <p class="hero-sub">Holi Event Bookings 2026</p>
+        </header>
+
+        <main style="width: 100%;">
+            <!-- Login -->
+            <div id="login-section" class="card login-container">
+                <h2 class="card-title" style="justify-content: center;">Enter Admin Password</h2>
+                <input type="password" id="admin-pass" placeholder="Password" />
+                <button class="btn btn-primary" id="btn-login">Login</button>
+                <div id="login-error" class="field-error" style="margin-top:10px; text-align:center;"></div>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="admin-dashboard" class="admin-container">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h3>Total Bookings</h3>
+                        <div class="val" id="stat-bookings">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Tickets</h3>
+                        <div class="val" id="stat-tickets">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Revenue</h3>
+                        <div class="val" id="stat-revenue">₹0</div>
+                    </div>
+                </div>
+
+                <div class="card" style="max-width: 100%; padding: 16px;">
+                    <h3 class="card-title">Latest Bookings</h3>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Mobile</th>
+                                    <th>Tickets</th>
+                                    <th>Amount</th>
+                                    <th>Booking ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookings-table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align:center;">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="admin.js"></script>
+</body>
+
+</html>
