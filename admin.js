@@ -29,6 +29,40 @@ document.addEventListener("DOMContentLoaded", () => {
     passInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") btnLogin.click();
     });
+
+    const btnUpdateSpots = document.getElementById("btn-update-spots");
+    const adminSpotsInput = document.getElementById("admin-spots");
+    const updateMsg = document.getElementById("update-spots-msg");
+
+    btnUpdateSpots.addEventListener("click", async () => {
+        const newSpots = adminSpotsInput.value;
+        if (!newSpots) return;
+
+        updateMsg.textContent = "Updating...";
+        updateMsg.style.color = "var(--cyan)";
+
+        try {
+            const patchUrl = `https://sheetdb.io/api/v1/${SHEETDB_ID}/key/spots_left?sheet=settings`;
+
+            const res = await fetch(patchUrl, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ data: { value: newSpots } })
+            });
+
+            if (!res.ok) throw new Error("Update failed");
+
+            window.currentSpots = newSpots;
+            updateMsg.textContent = "Updated successfully!";
+            updateMsg.style.color = "#00C853";
+            setTimeout(() => updateMsg.textContent = "", 3000);
+        } catch (err) {
+            console.error("Error updating spots:", err);
+            updateMsg.textContent = "Failed to update.";
+            updateMsg.style.color = "#FF6B6B";
+        }
+    });
+
 });
 
 async function fetchData() {
@@ -36,6 +70,22 @@ async function fetchData() {
         const response = await fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}`);
         if (!response.ok) throw new Error("Failed to fetch data");
         const data = await response.json();
+
+        try {
+            const settingsRes = await fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}?sheet=settings`);
+            if (settingsRes.ok) {
+                const settingsData = await settingsRes.json();
+                const row = settingsData.find(r => r.key === 'spots_left');
+                if (row && row.value !== undefined) {
+                    window.currentSpots = row.value;
+                    if (!document.getElementById("admin-spots").value) {
+                        document.getElementById("admin-spots").value = row.value;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Failed to fetch settings data", e);
+        }
 
         let totalBookings = data.length;
         let totalRevenue = 0;
