@@ -50,8 +50,26 @@ const PAYEE_NAME = "Holi Gajendragad"; // Shown in UPI app
 /* imgBB API key — get one free at https://api.imgbb.com/ */
 const IMGBB_API_KEY = "73604be6a9286f966b9c1d4a2a543a85";
 
-/* SheetDB sheet ID — from https://sheetdb.io/ */
-const SHEETDB_ID = "7p9uwypnu82ss";
+/* SheetDB API URLs */
+const SHEETDB_APIS = [
+    "https://sheetdb.io/api/v1/7p9uwypnu82ss",
+    "https://sheetdb.io/api/v1/ibiql2125wiml"
+];
+
+async function sheetdbFetch(endpoint = "", options = {}) {
+    for (let api of SHEETDB_APIS) {
+        try {
+            const res = await fetch(api + endpoint, options);
+            if (res.ok) {
+                console.log("SheetDB using:", api);
+                return res;
+            }
+        } catch (err) {
+            console.warn("SheetDB failed:", api);
+        }
+    }
+    throw new Error("All SheetDB APIs failed");
+}
 
 /* ──────────────────────────────────────────────
    BOOKING FORM PAGE  (index.html logic)
@@ -529,8 +547,6 @@ async function uploadToImgBB(file) {
  * @param {string} bookingId
  */
 async function saveToSheetDB(booking, imgUrl, bookingId) {
-    const url = `https://sheetdb.io/api/v1/${SHEETDB_ID}`;
-
     const row = {
         booking_id: bookingId,
         timeline: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),         // ISO 8601 timestamp
@@ -542,7 +558,7 @@ async function saveToSheetDB(booking, imgUrl, bookingId) {
         img_url: imgUrl,
     };
 
-    const response = await fetch(url, {
+    const response = await sheetdbFetch("", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: row }),
@@ -752,7 +768,7 @@ function fetchSpots() {
         console.warn("Failed to read spots cache", e);
     }
 
-    fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}?sheet=settings`)
+    sheetdbFetch("?sheet=settings")
         .then(res => {
             if (!res.ok) throw new Error("Network response was not ok");
             return res.json();
