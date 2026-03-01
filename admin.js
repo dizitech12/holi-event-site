@@ -1,7 +1,25 @@
 "use strict";
 
 const ADMIN_PASSWORD = "holi2026";
-const SHEETDB_ID = "7p9uwypnu82ss"; // Using the same ID as app.js
+const SHEETDB_APIS = [
+    "https://sheetdb.io/api/v1/7p9uwypnu82ss",
+    "https://sheetdb.io/api/v1/ibiql2125wiml"
+];
+
+async function sheetdbFetch(endpoint = "", options = {}) {
+    for (let api of SHEETDB_APIS) {
+        try {
+            const res = await fetch(api + endpoint, options);
+            if (res.ok) {
+                console.log("SheetDB using:", api);
+                return res;
+            }
+        } catch (err) {
+            console.warn("SheetDB failed:", api);
+        }
+    }
+    throw new Error("All SheetDB APIs failed");
+}
 const TICKET_PRICE = 300;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -67,12 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchData() {
     try {
-        const response = await fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}`);
+        const response = await sheetdbFetch("");
         if (!response.ok) throw new Error("Failed to fetch data");
         const data = await response.json();
 
         try {
-            const settingsRes = await fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}?sheet=settings`);
+            const settingsRes = await sheetdbFetch("?sheet=settings");
             if (settingsRes.ok) {
                 const settingsData = await settingsRes.json();
                 const row = settingsData.find(r => r.key === 'spots_left');
