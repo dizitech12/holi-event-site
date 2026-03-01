@@ -710,6 +710,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initBookingForm();   // runs only on index.html (guard inside)
     initPaymentPage();   // runs only on pay.html (guard inside)
     setupCopyButtons();  // safe to run on both
+    fetchSpots();        // safe to run on both
 });
 
 async function verifyPaymentScreenshot(file) {
@@ -725,4 +726,30 @@ async function verifyPaymentScreenshot(file) {
     if (/\d{9,}/.test(t)) score += 1;
 
     return score >= 3;
+}
+
+/**
+ * Fetch Remaining Spots from Google Sheet via SheetDB
+ */
+function fetchSpots() {
+    const badgeCount = document.getElementById("spots-count");
+    if (!badgeCount) return;
+
+    fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}?sheet=settings`)
+        .then(res => {
+            if (!res.ok) throw new Error("Network response was not ok");
+            return res.json();
+        })
+        .then(data => {
+            const row = data.find(r => r.key === 'spots_left');
+            if (row && row.value !== undefined && row.value !== "") {
+                badgeCount.textContent = row.value;
+            } else {
+                badgeCount.textContent = "20";
+            }
+        })
+        .catch(err => {
+            console.error("Failed to fetch spots:", err);
+            badgeCount.textContent = "20";
+        });
 }
