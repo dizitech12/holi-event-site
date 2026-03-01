@@ -53,7 +53,8 @@ const IMGBB_API_KEY = "73604be6a9286f966b9c1d4a2a543a85";
 /* SheetDB API URLs */
 const SHEETDB_APIS = [
     "https://sheetdb.io/api/v1/7p9uwypnu82ss",
-    "https://sheetdb.io/api/v1/ibiql2125wiml"
+    "https://sheetdb.io/api/v1/ibiql2125wiml",
+    "https://sheetdb.io/api/v1/gt6uqomwnjo2y"
 ];
 
 async function sheetdbFetch(endpoint = "", options = {}) {
@@ -61,7 +62,7 @@ async function sheetdbFetch(endpoint = "", options = {}) {
         try {
             const res = await fetch(api + endpoint, options);
             if (res.ok) {
-                console.log("SheetDB using:", api);
+                console.log("SheetDB active:", api);
                 return res;
             }
         } catch (err) {
