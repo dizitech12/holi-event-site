@@ -729,11 +729,28 @@ async function verifyPaymentScreenshot(file) {
 }
 
 /**
- * Fetch Remaining Spots from Google Sheet via SheetDB
+ * Fetch Remaining Spots from Google Sheet via SheetDB with 60s Cache
  */
 function fetchSpots() {
     const badgeCount = document.getElementById("spots-count");
     if (!badgeCount) return;
+
+    const cacheKey = "spots_cache";
+    const cacheExpiry = 60 * 1000; // 60 seconds
+
+    try {
+        const cachedStr = localStorage.getItem(cacheKey);
+        if (cachedStr) {
+            const cached = JSON.parse(cachedStr);
+            const now = new Date().getTime();
+            if (now - cached.timestamp < cacheExpiry) {
+                badgeCount.textContent = cached.value;
+                return; // Use fresh cache, skip API call
+            }
+        }
+    } catch (e) {
+        console.warn("Failed to read spots cache", e);
+    }
 
     fetch(`https://sheetdb.io/api/v1/${SHEETDB_ID}?sheet=settings`)
         .then(res => {
@@ -742,10 +759,19 @@ function fetchSpots() {
         })
         .then(data => {
             const row = data.find(r => r.key === 'spots_left');
+            let val = "20";
             if (row && row.value !== undefined && row.value !== "") {
-                badgeCount.textContent = row.value;
-            } else {
-                badgeCount.textContent = "20";
+                val = row.value;
+            }
+            badgeCount.textContent = val;
+
+            try {
+                localStorage.setItem(cacheKey, JSON.stringify({
+                    value: val,
+                    timestamp: new Date().getTime()
+                }));
+            } catch (e) {
+                console.warn("Failed to save spots cache", e);
             }
         })
         .catch(err => {
