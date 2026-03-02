@@ -21,7 +21,7 @@ async function sheetdbFetch(endpoint = "", options = {}) {
     }
     throw new Error("All SheetDB APIs failed");
 }
-const TICKET_PRICE = 300;
+const TICKET_PRICE = 299;
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("login-section");
@@ -163,3 +163,4 @@ function escapeHTML(str) {
         }[tag] || tag)
     );
 }
+
