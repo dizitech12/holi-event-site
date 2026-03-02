@@ -54,7 +54,7 @@ const IMGBB_API_KEY = "73604be6a9286f966b9c1d4a2a543a85";
 const SHEETDB_APIS = [
     "https://sheetdb.io/api/v1/7p9uwypnu82ss",
     "https://sheetdb.io/api/v1/ibiql2125wiml",
-    "https://sheetdb.io/api/v1/gt6uqomwnjo2y"
+    "https://sheetdb.io/api/v1/d06vqpjs16hzk"
 ];
 
 async function sheetdbFetch(endpoint = "", options = {}) {
