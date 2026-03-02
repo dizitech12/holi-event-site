@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loginSection.style.display = "none";
             adminDashboard.style.display = "block";
             fetchData();
-            setInterval(fetchData, 30000); // Auto-refresh every 30 seconds
+            setInterval(fetchData, 120000); // Auto-refresh every 120 seconds (2 mins)
         } else {
             errorEl.textContent = "Incorrect password. Redirecting...";
             errorEl.style.display = "block";
