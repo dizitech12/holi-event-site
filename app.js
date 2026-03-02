@@ -45,7 +45,7 @@ const UPI_IDS = [
     { id: "9448352260@ybl", name: "Holi Gajendragad" },
 ];
 
-const PAYEE_NAME = "Holi Gajendragad"; // Shown in UPI app
+const PAYEE_NAME = "shivaprasad nagri"; // Shown in UPI app
 
 /* imgBB API key — get one free at https://api.imgbb.com/ */
 const IMGBB_API_KEY = "73604be6a9286f966b9c1d4a2a543a85";
