@@ -38,7 +38,7 @@
    CONFIGURATION — Fill in your real values here
    ────────────────────────────────────────────── */
 
-const TICKET_PRICE = 300; // ₹ per ticket — change as needed
+const TICKET_PRICE = 299; // ₹ per ticket — change as needed
 
 /* Replace with your real UPI IDs */
 const UPI_IDS = [
