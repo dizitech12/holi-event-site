@@ -21,7 +21,7 @@ async function sheetdbFetch(endpoint = "", options = {}) {
     }
     throw new Error("All SheetDB APIs failed");
 }
-const TICKET_PRICE = 299;
+const TICKET_PRICE = 300;
 
 document.addEventListener("DOMContentLoaded", () => {
     const loginSection = document.getElementById("login-section");
@@ -109,17 +109,23 @@ async function fetchData() {
         let totalBookings = data.length;
         let totalRevenue = 0;
         let totalTickets = 0;
+        let totalEntries = 0;
 
         data.forEach(row => {
             const amount = parseFloat(row.total_amount) || 0;
             totalRevenue += amount;
             const tickets = amount / TICKET_PRICE;
             totalTickets += tickets;
+            if (row.entries && row.entries.toString().trim() !== "") {
+                totalEntries++;
+            }
         });
 
         document.getElementById("stat-bookings").textContent = totalBookings;
         document.getElementById("stat-tickets").textContent = totalTickets;
         document.getElementById("stat-revenue").textContent = `₹${totalRevenue.toLocaleString("en-IN")}`;
+        const entriesEl = document.getElementById("stat-entries");
+        if (entriesEl) entriesEl.textContent = totalEntries;
 
         const latestInfo = [...data].reverse().slice(0, 10);
 
@@ -163,4 +169,3 @@ function escapeHTML(str) {
         }[tag] || tag)
     );
 }
-
