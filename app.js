@@ -38,7 +38,7 @@
    CONFIGURATION — Fill in your real values here
    ────────────────────────────────────────────── */
 
-const TICKET_PRICE = 299; // ₹ per ticket — change as needed
+const TICKET_PRICE = 300; // ₹ per ticket — change as needed
 
 /* Replace with your real UPI IDs */
 const UPI_IDS = [
@@ -753,7 +753,7 @@ function fetchSpots() {
     if (!badgeCount) return;
 
     const cacheKey = "spots_cache";
-    const cacheExpiry = 60 * 1000; // 60 seconds
+    const cacheExpiry = 1200 * 1000; // 20 minutes (1200 seconds)
 
     try {
         const cachedStr = localStorage.getItem(cacheKey);
